@@ -1,0 +1,36 @@
+
+
+spring:
+  application:
+    name: Customer-Service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/customer_db
+    username: maysara
+    password: maysara
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+server:
+  shutdown: graceful
+
+
+
+
