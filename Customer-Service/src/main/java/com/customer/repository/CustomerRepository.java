@@ -1,6 +1,6 @@
-package repository;
+package com.customer.repository;
 
-import entity.Customer;
+import com.customer.entity.Customer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
