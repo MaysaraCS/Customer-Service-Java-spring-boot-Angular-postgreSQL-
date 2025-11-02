@@ -1,20 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles */
 html,
 body {
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 }
 
+/* Override Angular Material default row colors */
 .mat-mdc-row {
-    background-color: rgb(124, 156, 223) !important;
-    height: 40px !important;
+    height: 56px !important;
 }
 
+/* Remove the alternating colors from global styles since we handle it in home.css */
 .mat-mdc-row:nth-child(even) {
-    background-color: rgb(205, 185, 223) !important;
-    height: 30px !important;
+    background-color: transparent !important;
+}
+
+/* Material Dialog Overlay */
+.cdk-overlay-dark-backdrop {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+/* Smooth transitions */
+* {
+    box-sizing: border-box;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

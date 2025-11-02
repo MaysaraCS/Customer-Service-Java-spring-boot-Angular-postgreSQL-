@@ -1,30 +1,45 @@
-<div class="container" style="width: 350px">
-  <div>
-    <button mat-icon-button style="float: right; margin: 15px">
-      <mat-icon style="color: red"></mat-icon>
+<div class="dialog-container">
+  <!-- Close Button -->
+  <button mat-icon-button class="close-button" [mat-dialog-close]="false">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <!-- Dialog Title -->
+  <div matDialogTitle class="dialog-header">
+    <mat-icon class="header-icon">person_add</mat-icon>
+    <h2>{{ data.id !== 0 ? 'Edit Customer' : 'Add New Customer' }}</h2>
+  </div>
+
+  <!-- Dialog Content -->
+  <div matDialogContent class="dialog-content">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Full Name</mat-label>
+      <input matInput type="text" [(ngModel)]="data.name" placeholder="Enter customer name" />
+      <mat-icon matPrefix>person</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Email Address</mat-label>
+      <input matInput type="email" [(ngModel)]="data.email" placeholder="Enter email address" />
+      <mat-icon matPrefix>email</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Address</mat-label>
+      <input matInput type="text" [(ngModel)]="data.address" placeholder="Enter address" />
+      <mat-icon matPrefix>location_on</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Dialog Actions -->
+  <div matDialogActions class="dialog-actions">
+    <button mat-raised-button color="warn" matDialogClose class="action-button cancel-button">
+      <mat-icon>cancel</mat-icon>
+      Cancel
     </button>
-  </div>
-  <div matDialogTitle>
-    <h3 style="color: blueviolet">Customer Form</h3>
-  </div>
-  <div matDialogContent>
-    <mat-form-field>
-      <input matInput type="text" [(ngModel)]="data.name" placeholder="Enter Name" />
-      <mat-icon fontIcon="person" matSuffix></mat-icon>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-      <input matInput type="text" [(ngModel)]="data.email" placeholder="Enter Email" />
-      <mat-icon fontIcon="email" matSuffix></mat-icon>
-    </mat-form-field>
-    <br />
-    <mat-form-field>
-      <input matInput type="text" [(ngModel)]="data.address" placeholder="Enter Address" />
-      <mat-icon fontIcon="address" matSuffix></mat-icon>
-    </mat-form-field>
-  </div>
-  <div matDialogActions align="center">
-    <button mat-flat-button (click)="addOrEditCustomer(data)" [mat-dialog-close]="data">Submit</button>
-    <button mat-flat-button matDialogClose="true" color="warn">Cancel</button>
+    <button mat-raised-button color="primary" (click)="addOrEditCustomer(data)" [mat-dialog-close]="data" class="action-button submit-button">
+      <mat-icon>{{ data.id !== 0 ? 'save' : 'add' }}</mat-icon>
+      {{ data.id !== 0 ? 'Update' : 'Submit' }}
+    </button>
   </div>
 </div>

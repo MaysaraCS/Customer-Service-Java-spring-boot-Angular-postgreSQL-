@@ -1,66 +1,95 @@
-<div class="container" style="margin-top: 20px; margin-left: 30px; width: 778px">
-  <br />
-  <h3 style="color: blueviolet; text-align: center">
-    <strong> CRUD Customer Service Project-> Angular, Java Spring Boot & PostgreSQL </strong>
-  </h3>
-  <mat-form-field>
-    <input
-      matInput
-      (input)="filterCustomer(filter.value)"
-      placeholder="Search Customer"
-      type="text"
-      #filter
-    />
-  </mat-form-field>
-  <button mat-flat-button (click)="openCustomerDialog(customer)" style="width: 100px; float: right; margin: 15px">Add +</button>
-  <br />
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
-    <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+<div class="page-container">
+  <div class="content-wrapper">
+    <!-- Creative Header -->
+    <div class="header-section">
+      <h1 class="main-title">Customer Management System</h1>
+      <p class="subtitle">Full-Stack CRUD Application</p>
+      <div class="tech-stack">
+        <span class="tech-badge">Angular</span>
+        <span class="tech-badge">Spring Boot</span>
+        <span class="tech-badge">PostgreSQL</span>
+      </div>
+    </div>
 
-    <!-- Position Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
-      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-    </ng-container>
+    <!-- Search and Add Section -->
+    <div class="actions-bar">
+      <mat-form-field class="search-field">
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          (input)="filterCustomer(filter.value)"
+          placeholder="Search customers by name, email, or address..."
+          type="text"
+          #filter
+        />
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="openCustomerDialog(customer)" class="add-button">
+        <mat-icon>add</mat-icon>
+        Add Customer
+      </button>
+    </div>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-      <td mat-cell *matCellDef="let customer">{{ customer.name }}</td>
-    </ng-container>
+    <!-- Table Section -->
+    <div class="table-container">
+      <table mat-table [dataSource]="dataSource" class="customer-table mat-elevation-z8" matSort>
+        
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-      <td mat-cell *matCellDef="let customer">{{ customer.email }}</td>
-    </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+          <td mat-cell *matCellDef="let customer">{{ customer.name }}</td>
+        </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="address">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
-      <td mat-cell *matCellDef="let customer">{{ customer.address }}</td>
-    </ng-container>
-    <!-- edit -->
-    <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
-      <td mat-cell *matCellDef="let customer"><button (click)="openCustomerDialog(customer)" mat-flat-button style="height: 27px; width: auto;">Edit</button></td>
-    </ng-container>
-    <!-- delete -->
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Delete</th>
-      <td mat-cell *matCellDef="let customer"><button (click)="deleteCustomer(customer.id)" mat-flat-button color="warn" style="height: 27px; width: auto;">Delete</button></td>
-    </ng-container>
-    
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let customer">{{ customer.email }}</td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let customers; columns: displayedColumns"></tr>
-  </table>
-  <br />
-  <mat-paginator
-    [pageSizeOptions]="[4, 8, 12]"
-    showFirstLastButtons
-    aria-label="Select page of periodic elements"
-  >
-  </mat-paginator>
+        <!-- Address Column -->
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+          <td mat-cell *matCellDef="let customer">{{ customer.address }}</td>
+        </ng-container>
+
+        <!-- Edit Column -->
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef>Edit</th>
+          <td mat-cell *matCellDef="let customer">
+            <button (click)="openCustomerDialog(customer)" mat-icon-button color="primary" matTooltip="Edit customer">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Delete Column -->
+        <ng-container matColumnDef="delete">
+          <th mat-header-cell *matHeaderCellDef>Delete</th>
+          <td mat-cell *matCellDef="let customer">
+            <button (click)="deleteCustomer(customer.id)" mat-icon-button color="warn" matTooltip="Delete customer">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let customers; columns: displayedColumns"></tr>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      [pageSize]="10"
+      showFirstLastButtons
+      aria-label="Select page of customers"
+      class="custom-paginator"
+    >
+    </mat-paginator>
+  </div>
 </div>

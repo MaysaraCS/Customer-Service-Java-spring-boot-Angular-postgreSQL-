@@ -1,50 +1,57 @@
 import { CustomerService } from './../customer.service';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogContent, MatDialogModule, MatDialogRef, MatDialogTitle } from '@angular/material/dialog';
+import { Component, inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInput, MatInputModule } from "@angular/material/input";
+import { MatInputModule } from "@angular/material/input";
 import { Customer } from '../customer';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-form',
-  imports: [MatDialogModule, MatDialogTitle, MatDialogContent, MatDialogActions, 
-    MatButtonModule, MatButtonModule, MatIconModule, MatFormFieldModule, 
-    MatInput, MatIconModule, MatInputModule,CommonModule,FormsModule],
-  changeDetection:ChangeDetectionStrategy.OnPush,
+  imports: [
+    MatDialogModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
+  ],
   templateUrl: './customer-form.html',
   styleUrl: './customer-form.css',
 })
 export class CustomerForm {
-  readonly dialogRef=inject(MatDialogRef<CustomerForm>);
+  readonly dialogRef = inject(MatDialogRef<CustomerForm>);
+  data = inject<Customer>(MAT_DIALOG_DATA);
 
-  data=inject<Customer>(MAT_DIALOG_DATA);
-  constructor(private customerService:CustomerService){}
-  addOrEditCustomer(customer:Customer){
-    if(customer.id!==0){
+  constructor(private customerService: CustomerService) {}
+
+  addOrEditCustomer(customer: Customer): void {
+    if (customer.id !== 0) {
+      // Update existing customer
       this.customerService.updateCustomer(customer).subscribe({
-        next:(data)=>{
-          console.log("Customer updated Successfully...");
-          window.location.reload();
+        next: (data) => {
+          console.log("Customer updated successfully", data);
+          this.dialogRef.close(data);
         },
-        error:(err)=>{
-          console.log(err);
+        error: (err) => {
+          console.error('Error updating customer:', err);
+          alert('Failed to update customer. Please try again.');
         }
-      })
-      
-    }else{
+      });
+    } else {
+      // Create new customer
       this.customerService.createCustomer(customer).subscribe({
-        next:(data)=>{
-          console.log("Customer Created Successfully...");
-          window.location.reload();
+        next: (data) => {
+          console.log("Customer created successfully", data);
+          this.dialogRef.close(data);
         },
-        error:(err)=>{
-          console.log(err);
+        error: (err) => {
+          console.error('Error creating customer:', err);
+          alert('Failed to create customer. Please try again.');
         }
-      })
+      });
     }
   }
 }

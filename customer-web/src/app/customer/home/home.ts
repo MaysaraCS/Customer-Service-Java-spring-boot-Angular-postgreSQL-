@@ -1,7 +1,7 @@
 import { CustomerService } from './../customer.service';
 import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
-import { MatButton, MatButtonModule} from '@angular/material/button';
-import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Customer } from '../customer';
@@ -9,73 +9,103 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { CustomerForm } from '../customer-form/customer-form';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-home',
-  imports: [MatFormFieldModule,MatInputModule,MatButtonModule,
-    MatTableModule,MatSortModule,MatPaginatorModule,
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
 export class Home implements AfterViewInit {
   displayedColumns: string[] = ['id', 'name', 'email', 'address', 'edit', 'delete'];
-  customers:Customer[]=[];
-  filteredCustomer:Customer[]=[];
+  customers: Customer[] = [];
   dataSource = new MatTableDataSource<Customer>();
 
-  name:String='';
-  email:String='';
-  address:String='';
+  customer: Customer = {
+    id: 0,
+    name: '',
+    email: '',
+    address: ''
+  };
 
-  customer:Customer={
-    id:0,
-    name:'',
-    email:'',
-    address:''
-  }
   readonly dialog = inject(MatDialog);
-  @ViewChild(MatSort) sort : any;
-  @ViewChild(MatPaginator) paginator: any;
-  constructor(private customerService:CustomerService){}
-  ngAfterViewInit(): void {
-    this.customerService.fetchAllCustomers().subscribe((data)=>{
-      this.customers=data;
-      this.dataSource = new MatTableDataSource<Customer>(data);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-    })
-  }
-  filterCustomer(input: string) {
-  this.filteredCustomer = this.customers.filter(item =>
-    item.name.toLowerCase().includes(input.toLowerCase()) ||
-    item.email.toLowerCase().includes(input.toLowerCase()) ||
-    item.address.toLowerCase().includes(input.toLowerCase())
-  );
-  this.dataSource = new MatTableDataSource<Customer>(this.filteredCustomer);
-}
 
-  openCustomerDialog(customer:Customer):void{
-    const dialogRef = this.dialog.open(CustomerForm,{
-      data:customer
-    });
-    dialogRef.afterClosed().subscribe(result=>{
-      if(result!=undefined){
-        this.customer.id=result.id;
-        this.customer.name=result.name;
-        this.customer.email=result.email;
-        this.customer.address=result.address;
+  @ViewChild(MatSort) sort: MatSort | null = null;
+  @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
+
+  constructor(private customerService: CustomerService) {}
+
+  ngAfterViewInit(): void {
+    this.loadCustomers();
+  }
+
+  loadCustomers(): void {
+    this.customerService.fetchAllCustomers().subscribe({
+      next: (data) => {
+        this.customers = data;
+        this.dataSource.data = data;
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      },
+      error: (err) => {
+        console.error('Error loading customers:', err);
       }
     });
   }
-  deleteCustomer(id:Number){
-    const isConfirmed=window.confirm("Are you sure you want to delete");
-    if(isConfirmed){
-      this.customerService.deleteCustomer(id).subscribe((data)=>{
-        this.customers=this.customers.filter(item=>item.id!==id);
-      })
-      window.location.reload();
 
+  filterCustomer(input: string): void {
+    const filterValue = input.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
+  }
+
+  openCustomerDialog(customer: Customer): void {
+    // Create a copy to avoid modifying the original object
+    const customerCopy: Customer = {
+      id: customer.id,
+      name: customer.name,
+      email: customer.email,
+      address: customer.address
+    };
+
+    const dialogRef = this.dialog.open(CustomerForm, {
+      data: customerCopy,
+      width: '500px',
+      disableClose: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Reload data after successful operation
+        this.loadCustomers();
+      }
+    });
+  }
+
+  deleteCustomer(id: Number): void {
+    const isConfirmed = window.confirm('Are you sure you want to delete this customer?');
+    if (isConfirmed) {
+      this.customerService.deleteCustomer(id).subscribe({
+        next: () => {
+          console.log('Customer deleted successfully');
+          // Reload all customers to refresh the table
+          this.loadCustomers();
+        },
+        error: (err) => {
+          console.error('Error deleting customer:', err);
+          alert('Failed to delete customer. Please try again.');
+        }
+      });
     }
   }
 }
