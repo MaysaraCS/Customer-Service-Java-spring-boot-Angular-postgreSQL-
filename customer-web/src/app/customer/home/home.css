@@ -1,0 +1,29 @@
+table {
+    width: 100%;
+    border: 1px solid currentColor;
+    text-align: center;
+}
+    /* Fix for form field alignment (Angular Material MDC) */
+    .mdc-notched-outline {
+        .mdc-notched-outline--no-label {
+            align-items: center;
+            height: 2.5rem;
+    }
+}
+
+/* Fix for Angular Material table cell height */
+.mat-cell {
+    height: 30px !important;
+    /*text-align: center;*/
+}
+
+
+    .mat-mdc-form-field-flex {
+        align-items: center;
+        height: 2.5rem;
+    }
+
+    /* Sort header color when active */
+    th.mat-sort-header-sorted {
+        color: black;
+    }

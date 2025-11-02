@@ -14,5 +14,14 @@ export class CustomerService{
     fetchAllCustomers():Observable<Customer[]>{
         return this._httpClient.get<Customer[]>(`${this.baseUrl}`);
     }
+    createCustomer(data:Customer){
+        return this._httpClient.post<Customer>(`${this.baseUrl}`,data);
+    }
+    updateCustomer(data:Customer){
+        return this._httpClient.put<Customer>(`${this.baseUrl}/${data.id}`,data);
+    }
+    deleteCustomer(id:Number){
+        return this._httpClient.delete<Customer>(`${this.baseUrl}/${id}`);
+    }
     
 }

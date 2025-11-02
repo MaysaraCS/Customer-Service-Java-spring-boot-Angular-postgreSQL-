@@ -1,1 +1,30 @@
-<p>customer-form works!</p>
+<div class="container" style="width: 350px">
+  <div>
+    <button mat-icon-button style="float: right; margin: 15px">
+      <mat-icon style="color: red"></mat-icon>
+    </button>
+  </div>
+  <div matDialogTitle>
+    <h3 style="color: blueviolet">Customer Form</h3>
+  </div>
+  <div matDialogContent>
+    <mat-form-field>
+      <input matInput type="text" [(ngModel)]="data.name" placeholder="Enter Name" />
+      <mat-icon fontIcon="person" matSuffix></mat-icon>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <input matInput type="text" [(ngModel)]="data.email" placeholder="Enter Email" />
+      <mat-icon fontIcon="email" matSuffix></mat-icon>
+    </mat-form-field>
+    <br />
+    <mat-form-field>
+      <input matInput type="text" [(ngModel)]="data.address" placeholder="Enter Address" />
+      <mat-icon fontIcon="address" matSuffix></mat-icon>
+    </mat-form-field>
+  </div>
+  <div matDialogActions align="center">
+    <button mat-flat-button (click)="addOrEditCustomer(data)" [mat-dialog-close]="data">Submit</button>
+    <button mat-flat-button matDialogClose="true" color="warn">Cancel</button>
+  </div>
+</div>
