@@ -12,7 +12,7 @@ export class CustomerService{
     private baseUrl:String="/api/v1/customers";
 
     fetchAllCustomers():Observable<Customer[]>{
-        return this._httpClient.get<Customer[]>(`$(this.baseUrl)`);
+        return this._httpClient.get<Customer[]>(`${this.baseUrl}`);
     }
     
 }
