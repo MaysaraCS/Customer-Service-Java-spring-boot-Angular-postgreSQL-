@@ -7,7 +7,7 @@
   <!-- Dialog Title -->
   <div matDialogTitle class="dialog-header">
     <mat-icon class="header-icon">person_add</mat-icon>
-    <h2>{{ data.id !== 0 ? 'Edit Customer' : 'Add New Customer' }}</h2>
+    <h2>{{ data.id ? 'Edit Customer' : 'Add New Customer' }}</h2>
   </div>
 
   <!-- Dialog Content -->
@@ -33,13 +33,23 @@
 
   <!-- Dialog Actions -->
   <div matDialogActions class="dialog-actions">
-    <button mat-raised-button color="warn" matDialogClose class="action-button cancel-button">
+    <button
+      mat-raised-button
+      color="warn"
+      [mat-dialog-close]="false"
+      class="action-button cancel-button"
+    >
       <mat-icon>cancel</mat-icon>
       Cancel
     </button>
-    <button mat-raised-button color="primary" (click)="addOrEditCustomer(data)" [mat-dialog-close]="data" class="action-button submit-button">
-      <mat-icon>{{ data.id !== 0 ? 'save' : 'add' }}</mat-icon>
-      {{ data.id !== 0 ? 'Update' : 'Submit' }}
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="addOrEditCustomer(data)"
+      class="action-button submit-button"
+    >
+      <mat-icon>{{ data.id ? 'save' : 'add' }}</mat-icon>
+      {{ data.id ? 'Update' : 'Submit' }}
     </button>
   </div>
 </div>

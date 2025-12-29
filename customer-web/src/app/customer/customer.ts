@@ -1,6 +1,6 @@
 export interface Customer {
-  id:Number,
-  name:String,
-  email:String,
-  address:String
+  id?: Number,  
+  name: String,
+  email: String,
+  address: String
 }

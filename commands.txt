@@ -1,0 +1,8 @@
+ng new customer-web
+ng serve-o
+ng add @angular/material
+ng g module customer
+ng g service customer/customer
+ng g c customer/home --standalone
+ng g c customer/customer-form --standalone
+ng g i customer/customer

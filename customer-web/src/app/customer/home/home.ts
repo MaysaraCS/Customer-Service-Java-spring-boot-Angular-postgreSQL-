@@ -33,11 +33,10 @@ export class Home implements AfterViewInit {
   dataSource = new MatTableDataSource<Customer>();
 
   customer: Customer = {
-    id: 0,
     name: '',
     email: '',
     address: ''
-  };
+  };  // Removed id: 0
 
   readonly dialog = inject(MatDialog);
 

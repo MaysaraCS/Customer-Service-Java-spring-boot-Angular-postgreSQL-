@@ -19,22 +19,28 @@ public class CustomerServiceImplement implements CustomerService {
 
     @Override
     public Customer fetchById(Long id) {
-        return customerRepository.findById(id).get();
+        return customerRepository.findById(id).orElse(null);
     }
 
     @Override
     public Customer createCustomer(Customer customer) {
+        // Ensure ID is null for new entities
+        customer.setId(null);
         return customerRepository.save(customer);
     }
 
     @Override
     public Customer updateCustomer(Customer customer) {
+        // Verify the customer exists before updating
+        if (customer.getId() == null || !customerRepository.existsById(customer.getId())) {
+            throw new IllegalArgumentException("Cannot update non-existent customer");
+        }
         return customerRepository.save(customer);
     }
 
     @Override
     public String deleteCustomer(Customer customer) {
         customerRepository.delete(customer);
-        return "Customer Deleted Successfully for id:"+customer.getId();
+        return "Customer Deleted Successfully for id:" + customer.getId();
     }
 }

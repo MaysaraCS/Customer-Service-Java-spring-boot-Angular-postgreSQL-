@@ -28,12 +28,12 @@ export class CustomerForm {
   constructor(private customerService: CustomerService) {}
 
   addOrEditCustomer(customer: Customer): void {
-    if (customer.id !== 0) {
+    if (customer.id && customer.id !== 0) {
       // Update existing customer
       this.customerService.updateCustomer(customer).subscribe({
         next: (data) => {
           console.log("Customer updated successfully", data);
-          this.dialogRef.close(data);
+          this.dialogRef.close(true); // Close with success flag
         },
         error: (err) => {
           console.error('Error updating customer:', err);
@@ -41,11 +41,17 @@ export class CustomerForm {
         }
       });
     } else {
-      // Create new customer
-      this.customerService.createCustomer(customer).subscribe({
+      // Create new customer - don't send id
+      const newCustomer: Partial<Customer> = {
+        name: customer.name,
+        email: customer.email,
+        address: customer.address
+      };
+      
+      this.customerService.createCustomer(newCustomer).subscribe({
         next: (data) => {
           console.log("Customer created successfully", data);
-          this.dialogRef.close(data);
+          this.dialogRef.close(true); // Close with success flag
         },
         error: (err) => {
           console.error('Error creating customer:', err);
